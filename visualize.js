@@ -1,12 +1,17 @@
 
 $(".visualizeJs").css({
 	"border":"2px solid black"
-}).each(function () {	
-	$(this).append("<audio src='" + $(this).attr("src") + "' controls></audio>");
-	parent = $(this);
-	audio = $(this).find("audio").css({
+}).each(function () {
+	$this = $(this);
+	$this.append("<audio src='" + $this.attr("src") + "' controls></audio>");
+	parent = $this;
+	audio = $this.find("audio").css({
 		"width":"100%"
 	});
+	var pianoArrayLength = 30;
+	if (typeof $this.attr("tiles") !== "undefined") {
+		pianoArrayLength = Number($this.attr("tiles"));
+	}
 	
 	var audioCtx = new (window.AudioContext || window.webkitAudioContext)(),
 		player = audio[0],
@@ -15,8 +20,7 @@ $(".visualizeJs").css({
 	audioSrc.connect(analyser);
 	audioSrc.connect(audioCtx.destination);
 
-	var pianoArrayLength = 30,
-		pianoArray = new Uint8Array(pianoArrayLength),
+	var pianoArray = new Uint8Array(pianoArrayLength),
 		colorArray = new Uint8Array(3);	
 
 	for (var i = 0; i < pianoArrayLength; i++) {
